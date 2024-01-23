@@ -24,16 +24,6 @@ const io = new Server(server);
 
 //databases
 export let room = {
-    // id: null,
-    // admin: null,
-    // grouName: null,
-    // matchOver: null,
-    // isStarted: null,
-    // participants: [{ id: null, score: null }],
-    // turnToPlay: { current: 0, previous: 0 },
-    // questions: [],
-    // answers: [],
-    // activePlayers: [{ id: e.id, chanceRemaining: 3, hasAnswered: false }]
 }
 export let queue = [];
 
@@ -65,7 +55,11 @@ app.get('/', (req, res) => {
 
 
 const client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+        headless: true,
+        args: ['--no-sandbox']
+    }
 });
 
 
