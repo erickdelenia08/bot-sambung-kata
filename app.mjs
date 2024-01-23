@@ -5,7 +5,7 @@ import { EditPhotoHandler } from './feature/edit_foto.mjs';
 import { ChatAIHandler } from './feature/chat_ai.mjs'
 import fs from 'fs';
 import mime from 'mime-types';
-import { kataBersambung, readingFile } from './feature/sambung_kata.mjs';
+import { processingMessage, readingFile } from './feature/processing_message.mjs';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -100,12 +100,7 @@ client.on('message', async message => {
     const chat = await message.getChat()
     if (chat.isGroup) {
         console.log('pesan masuk');
-        // (await message.getChat()).sendMessage(JSON.stringify({sender,idGroup,groupName,user}))
-        kataBersambung(body.toLowerCase(), message, client)
-
-
-
-
+        processingMessage(body.toLowerCase(), message, client)
     }
 
 });

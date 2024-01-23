@@ -67,15 +67,13 @@ const creatingDirectory = (dir) => {
 }
 
 
-export const kataBersambung = async (text, message, client) => {
-    // const mentions = await message.getMentions();
+export const processingMessage = async (text, message, client) => {
     const chat = await message.getChat();
     const idGroup = chat.groupMetadata.id.user;
     const groupName = chat.groupMetadata.subject
     const userContact = await message.getContact()
     const idSender = userContact.id.user;
     const senderName = userContact.pushname
-    // console.log(mentions);
     if (text === '/create@game') {
 
         if (Object.keys(room).length === 0) {
@@ -304,6 +302,21 @@ export const kataBersambung = async (text, message, client) => {
                     }
                 }
             }
+        } else if (message.body.toLowerCase() == '/sticker') {
+            const quotedMsg = await message.getQuotedMessage();
+            if (message.hasMedia) {
+                client.sendMessage(message.from, "iya bentar bro");
+                try {
+                    const media = await message.downloadMedia();
+                    client.sendMessage(message.from, media, {
+                        sendMediaAsSticker: true,
+                        stickerName: 'sticker',
+                        stickerAuthor: 'credit ig: _use.errr' 
+                    })
+                } catch {
+                    client.sendMessage(message.from, "Gagal memproses..");
+                }
+            } 
         }
     }
 }
