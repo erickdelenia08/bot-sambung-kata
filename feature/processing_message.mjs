@@ -216,10 +216,10 @@ export const processingMessage = async (text, message, client) => {
     } else if (text == '/players@game') {
         if (Object.keys(room).length != 0) {
             if (idGroup === room.id) {
-                let str = 'Peserta saat ini:\n'
+                let str = '*Peserta saat ini:*\n'
                 for (let i = 0; i < room.participants.length; i++) {
                     const contact = await client.getContactById(`${room.participants[i].id}@c.us`)
-                    str = str.concat('\n', i + 1, ' .', contact.pushname)
+                    str = str.concat('\n', i + 1, '. ', contact.pushname)
                 }
                 chat.sendMessage(str)
             }
@@ -304,6 +304,7 @@ export const processingMessage = async (text, message, client) => {
                                         })
                                         console.log('sudah kirim respon');
                                     } else {
+                                        deleteTImer()
                                         dropActivePlayer(room.turnToPlay.current);
                                         await decideGame(chat, client, idGroup);
                                     }
