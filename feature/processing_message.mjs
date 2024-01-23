@@ -213,7 +213,19 @@ export const processingMessage = async (text, message, client) => {
 
     } else if (text == '/help@game') {
         chat.sendMessage(help())
-    } else if (text == '/queue@game') {
+    } else if (text == '/players@game') {
+        if (Object.keys(room).length != 0) {
+            if (idGroup === room.id) {
+                let str = 'Peserta saat ini:\n'
+                for (let i = 0; i < room.participants.length; i++) {
+                    const contact = await client.getContactById(`${room.participants[i].id}@c.us`)
+                    str = str.concat('\n', i + 1, ' .', contact.pushname)
+                }
+                chat.sendMessage(str)
+            }
+        }
+    }
+    else if (text == '/queue@game') {
         let str = ''
         queue.map(async (e, i) => {
             let contactUser = await client.getContactById(`${e.admin}@c.us`)
@@ -369,7 +381,7 @@ const decideGame = async (chat, client, idGroup) => {
         const winner = await client.getContactById(`${room.activePlayers[0].id}@c.us`)
         const gold = '🥇'
         const silver = '🥈'
-        let str = '🏆 game over 🏆\n\nselamat buat'
+        let str = '🏆 game over 🏆\n\nselamat buat '
         str = str.concat(winner.pushname, ', kamu dapat tambahan 20 poin\n\n----------------------------\nklasemen:\n')
         room.participants = quickSort(room.participants);
         console.log('HABIS SHORTING');
@@ -385,13 +397,12 @@ const decideGame = async (chat, client, idGroup) => {
                 } else {
                     str = str.concat(i + 1, '. ', contact.pushname, '(', room.participants[i].score, ')\n')
                 }
-
             }
             console.log(str);
             resolve()
         })
 
-        str = str.concat('\n----------------------------\n\nmulai room baru:\n/create@KataBersambungBot\n----------------------------\n\n-----------\nCredit\nGame by Erick Delenia\n-----------')
+        str = str.concat('\n----------------------------\n\nmulai room baru:\n/create@KataBersambungBot\n----------------------------\n\n-----------\nJangan lupa makan ya, nanti main lagi.')
         chat.sendMessage(str)
         console.log(str);
         deleteRoom()
