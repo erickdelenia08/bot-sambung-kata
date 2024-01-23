@@ -220,7 +220,23 @@ export const processingMessage = async (text, message, client) => {
             str += `${i} ${contactUser.pushname} (${e.id})\n`
         })
         chat.sendMessage(str)
-    } else {
+    } else if (text == '/sticker') {
+        console.log('mau buat stikker');
+        if (message.hasMedia) {
+            client.sendMessage(message.from, "iya bentar bro");
+            try {
+                const media = await message.downloadMedia();
+                client.sendMessage(message.from, media, {
+                    sendMediaAsSticker: true,
+                    stickerName: 'sticker',
+                    stickerAuthor: 'credit ig: _use.errr'
+                })
+            } catch {
+                client.sendMessage(message.from, "Gagal memproses..");
+            }
+        }
+    }
+    else {
         if (message.hasQuotedMsg && message._data.quotedParticipant === client.info.me._serialized) {
             console.log('ngreply saya');
             if (idGroup === room.id && room.isStarted) {
@@ -302,21 +318,6 @@ export const processingMessage = async (text, message, client) => {
                     }
                 }
             }
-        } else if (message.body.toLowerCase() == '/sticker') {
-            const quotedMsg = await message.getQuotedMessage();
-            if (message.hasMedia) {
-                client.sendMessage(message.from, "iya bentar bro");
-                try {
-                    const media = await message.downloadMedia();
-                    client.sendMessage(message.from, media, {
-                        sendMediaAsSticker: true,
-                        stickerName: 'sticker',
-                        stickerAuthor: 'credit ig: _use.errr' 
-                    })
-                } catch {
-                    client.sendMessage(message.from, "Gagal memproses..");
-                }
-            } 
         }
     }
 }

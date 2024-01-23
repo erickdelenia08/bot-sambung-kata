@@ -101,6 +101,21 @@ client.on('message', async message => {
     if (chat.isGroup) {
         console.log('pesan masuk');
         processingMessage(body.toLowerCase(), message, client)
+    } else if (body.toLowerCase() == '/sticker') {
+        console.log('mau buat stikker');
+        if (message.hasMedia) {
+            client.sendMessage(message.from, "iya bentar bro");
+            try {
+                const media = await message.downloadMedia();
+                client.sendMessage(message.from, media, {
+                    sendMediaAsSticker: true,
+                    stickerName: 'sticker',
+                    stickerAuthor: 'credit ig: _use.errr'
+                })
+            } catch {
+                client.sendMessage(message.from, "Gagal memproses..");
+            }
+        }
     }
 
 });
